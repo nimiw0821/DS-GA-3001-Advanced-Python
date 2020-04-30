@@ -12,7 +12,7 @@ from sklearn.metrics.pairwise import pairwise_distances
 
 #use util/load.py/ load_file(file_path)
 movies = pd.read_csv('data/movies.csv', header = 0)
-ratings = pd.read_csv('ml-latest/ratings.csv', header = 0, 
+ratings = pd.read_csv('data/ratings.csv', header = 0, 
                       usecols = ['userId', 'movieId', 'rating'])
 
 #user-movie matrix

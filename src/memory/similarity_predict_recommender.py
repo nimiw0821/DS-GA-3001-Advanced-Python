@@ -6,37 +6,37 @@ import numpy as np
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics.pairwise import pairwise_distances
 #import matplotlib.pyplot as plt
+from data_prep import load_file
+
+# ### data loading
+
+# #use util/load.py/ load_file(file_path)
+# #movies = pd.read_csv('data/movies.csv', header = 0)
+# #ratings = pd.read_csv('data/ratings.csv', header = 0, 
+# #                      usecols = ['userId', 'movieId', 'rating'])
+
+# #user-movie matrix
+# um = pd.pivot_table(ratings, values='rating', index='userId', columns='movieId')
+# um.fillna(0, inplace=True)
+
+# sparsity = ratings.shape[0]/um.size
+# #print('Sparsity: {:.2f}%'.format(sparsity*100)) 
+# ## 1.7% of the user-movie ratings have a value.
 
 
-### data loading
+# ### Train-Test Split
+# train_um = um.values.copy()
+# test_um = np.zeros(um.shape)
 
-#use util/load.py/ load_file(file_path)
-movies = pd.read_csv('data/movies.csv', header = 0)
-ratings = pd.read_csv('data/ratings.csv', header = 0, 
-                      usecols = ['userId', 'movieId', 'rating'])
-
-#user-movie matrix
-um = pd.pivot_table(ratings, values='rating', index='userId', columns='movieId')
-um.fillna(0, inplace=True)
-
-sparsity = ratings.shape[0]/um.size
-#print('Sparsity: {:.2f}%'.format(sparsity*100)) 
-## 1.7% of the user-movie ratings have a value.
-
-
-### Train-Test Split
-train_um = um.values.copy()
-test_um = np.zeros(um.shape)
-
-for user in range(um.shape[0]):
-    test_rating = np.random.choice(um.values[user, :].nonzero()[0], size=10, replace=False)
-    train_um[user, test_rating] = 0
-    test_um[user, test_rating] = um.values[user, test_rating]
+# for user in range(um.shape[0]):
+#     test_rating = np.random.choice(um.values[user, :].nonzero()[0], size=10, replace=False)
+#     train_um[user, test_rating] = 0
+#     test_um[user, test_rating] = um.values[user, test_rating]
     
-print(test_um.shape)
-print(train_um.shape)
+# print(test_um.shape)
+# print(train_um.shape)
 
-assert(np.all((train_um * test_um) == 0)) ## test train and test are disjoint
+# assert(np.all((train_um * test_um) == 0)) ## test train and test are disjoint
 
 
 ### Cosine Similarity
@@ -73,8 +73,8 @@ def predict(user_item, similarity, kind):
     elif kind == 'item':
         return user_item.dot(similarity) / np.array([np.abs(similarity).sum(axis=1)])
 
-user_pred = predict(train_um, user_sim, kind='user')
-item_pred = predict(train_um, item_sim, kind='item')
+#user_pred = predict(train_um, user_sim, kind='user')
+#item_pred = predict(train_um, item_sim, kind='item')
 
 
 ### Recommendations
@@ -82,7 +82,7 @@ def memory_based_recommender(prediction, userid, rating, n_recom):
     #rename: recommend_movies
     
     # Get and sort the user's predictions
-    pred = pd.DataFrame(prediction, index=um.index)
+    pred = pd.DataFrame(prediction, index=um.index)  #um = user-movie matrix
     pred_sort = pred.loc[userid].sort_values(ascending=False)
     pred_s ort.rename('prediction', inplace=True)
     
@@ -97,25 +97,25 @@ def memory_based_recommender(prediction, userid, rating, n_recom):
     
     return recommendation
 
-user_sim = similarity(train_um, kind='user')
-user_pred = predict(train_um, user_sim, kind='user')
-memory_based_recommender(user_pred, 610, ratings, 5)
+# user_sim = similarity(train_um, kind='user')
+# user_pred = predict(train_um, user_sim, kind='user')
+# memory_based_recommender(user_pred, 610, ratings, 5)
 
-user_sim = similarity(um.values, kind='user')
-user_pred = predict(um.values, user_sim, kind='user')
-memory_based_recommender(user_pred, 610, ratings, 5)
+# user_sim = similarity(um.values, kind='user')
+# user_pred = predict(um.values, user_sim, kind='user')
+# memory_based_recommender(user_pred, 610, ratings, 5)
 
-memory_based_recommender(item_pred, 610, ratings, 5)
+# memory_based_recommender(item_pred, 610, ratings, 5)
 
 
-### Evaluation: RMSE
-def get_rmse(pred, act):
-    # Ignore nonzero terms.
-    pred = pred[act.nonzero()].flatten()
-    act = act[act.nonzero()].flatten()
-    rmse = mean_squared_error(pred, act)**0.5
-    return rmse
+# ### Evaluation: RMSE
+# def get_rmse(pred, act):
+#     # Ignore nonzero terms.
+#     pred = pred[act.nonzero()].flatten()
+#     act = act[act.nonzero()].flatten()
+#     rmse = mean_squared_error(pred, act)**0.5
+#     return rmse
 
-print('User-based RMSE: ', get_rmse(user_pred, test_um))
-print('Item-based RMSE: ', get_rmse(item_pred, test_um))
+# print('User-based RMSE: ', get_rmse(user_pred, test_um))
+# print('Item-based RMSE: ', get_rmse(item_pred, test_um))
 

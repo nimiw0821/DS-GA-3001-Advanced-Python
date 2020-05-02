@@ -5,5 +5,5 @@ import numpy as np
 
 from load_copy import load_file
 
-rating = load_file('data/ratings.csv', ['userId', 'movieId', 'rating'])
+rating = load_file(f'/data/ratings.csv', ['userId', 'movieId', 'rating'])
 rating.shape

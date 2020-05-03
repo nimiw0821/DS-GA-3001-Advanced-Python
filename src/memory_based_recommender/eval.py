@@ -9,7 +9,7 @@ memory_based_recommender(user_pred, 610, ratings, 5)
 memory_based_recommender(item_pred, 610, ratings, 5)
 
 
-### Evaluation: RMSE
+### Evaluation: RMSE #consistent evaluation with other model #MAP?
 def get_rmse(pred, act):
     # Ignore nonzero terms.
     pred = pred[act.nonzero()].flatten()

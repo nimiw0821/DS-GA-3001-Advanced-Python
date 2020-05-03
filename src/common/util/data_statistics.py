@@ -1,4 +1,4 @@
-import pandas as pd
+# compute preliminary statistics information of a dataset
 
 def data_statistics(data):
     '''

@@ -1,4 +1,4 @@
-import pandas as pd
+# To load data file from data directory
 
 def load_file(file_path, col_select_list = None):
     '''

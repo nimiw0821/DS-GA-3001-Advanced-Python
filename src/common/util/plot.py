@@ -1,5 +1,4 @@
-import seaborn as sns
-import matplotlib.pyplot as plt
+# Plotting
 
 get_ipython().run_line_magic('matplotlib', 'inline')
 

@@ -56,9 +56,11 @@ def memory_based_recommender_2(prediction, userid, rating, n_recom, user_matrix,
     
     return recommendation
 
+## model3 : cython add ndarray
 
-# def memory_based_recommender_3():
-# """add ctype"""
-#     return 0
+
+def memory_based_recommender_4():
+"""add ctype"""
+    return 0
 
 

@@ -80,7 +80,7 @@ ts_model_5 = time.time()
 #print(model3.memory_based_recommender_cython(user_pred, 10, ratings, 5, um, movies))
 #print(model3.memory_based_recommender_cython(item_pred, 10, ratings, 5, um, movies))
 ts_model_6 = time.time()
-print('model 2 takes', ts_model_6-ts_model_5, 'secs')
+print('model 3 cython takes', ts_model_6-ts_model_5, 'secs')
 
 
 

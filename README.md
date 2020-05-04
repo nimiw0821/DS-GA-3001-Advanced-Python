@@ -16,3 +16,12 @@ Time for creating a similarity matrix and generate 10 recommendations for each o
 - operator: 0.539446
 - nested for loops: 3196.772852
 - parallel computing: TODO
+
+
+## ALS Recommender
+
+Time for training models:
+
+- `Basic ALS`: 470s
+- `ALS with Conjugate Gradient`: 74s
+- `ALS with Conjugate Gradient using Numba JIT (C compiler)`: 10s

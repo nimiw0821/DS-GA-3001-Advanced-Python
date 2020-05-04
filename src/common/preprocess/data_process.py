@@ -48,6 +48,8 @@ def split(data, p = False, dense = False):
     split data into train test.
     Support np.array, pd.DataFrame, and sparse.csr_matrix for both input and output
     '''
+    # set seed
+    np.random.seed(1234)
     # check input type and transform it to np.array for splitting later
     if isinstance(data, pd.DataFrame):
         data = data.values.copy()

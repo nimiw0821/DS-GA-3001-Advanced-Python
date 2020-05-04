@@ -53,14 +53,15 @@ def memory_based_recommender_2(prediction, userid, rating, n_recom, user_matrix,
     notsee = notsee.merge(pd.DataFrame(pred_sort), how='left', left_on='movieId', right_index=True)
     notsee = notsee.sort_values('prediction', ascending=False)
     recommendation = notsee.iloc[:n_recom, :-1]
-    
+
     return recommendation
 
 ## model3 : cython add ndarray
 
 
 def memory_based_recommender_4():
-"""add ctype"""
+    
+
     return 0
 
 

@@ -1,4 +1,4 @@
-### ALS with optimization using conjugate gradient
+### ALS with optimization using conjugate gradient and Numba JIT which uses C API to compile
 import numpy as np
 from numba import jit
 

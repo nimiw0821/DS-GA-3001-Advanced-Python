@@ -16,10 +16,11 @@ def precision(true_arr, rec_arr, k = None, disp = True):
     '''
     if k:
         assert k <= rec_arr.shape[1]
+        assert k > 0
         rec_arr = rec_arr[:,:k]
     else:
-        assert k > 0
-        k = rec_arr.shape[1]
+        if k == 0: raise Exception()
+        else: k = rec_arr.shape[1]
         
     p = []
     for i in range(rec_arr.shape[0]):
@@ -45,16 +46,18 @@ def MAP(true_arr, rec_arr, k = None, disp = True):
     '''
     if k:
         assert k <= rec_arr.shape[1]
+        assert k > 0
         rec_arr = rec_arr[:,:k]
     else:
-        assert k > 0
-        k = rec_arr.shape[1]
+        if k == 0: raise Exception()
+        else: k = rec_arr.shape[1]
     
-    # create a user by k matrix for storage of AP@k
+    # create a user by k matrix for storing AP@k 
+    # by finding the number of common elements in rec and real for each user i at k = j
     p = np.zeros((rec_arr.shape[0], k))
     for i in range(rec_arr.shape[0]):
         for j in range(k):
-            p[i,j] = np.intersect1d(true_arr[i,:j+1], rec_arr[i,:j+1]).shape[0]
+            p[i,j] = np.intersect1d(true_arr[i,:j+1], rec_arr[i,:j+1]).shape[0]/(j+1)
     
     mAP = np.mean(np.mean(p,1))
     

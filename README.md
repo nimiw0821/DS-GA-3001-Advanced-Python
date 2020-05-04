@@ -8,6 +8,8 @@ Dataset: https://grouplens.org/datasets/movielens/latest/
 
 Time for creating a similarity matrix and generate 10 recommendations for each of the 3 movies:
 
+With Function Calls:
+
 - `linear_kernel`: 0.895984
 - `cosine_similarity`: 0.937319
 - `pairwise_distance`: 1.472686
@@ -17,6 +19,14 @@ Time for creating a similarity matrix and generate 10 recommendations for each o
 - nested for loops: 3196.772852
 - parallel computing: TODO
 
+Remove Function Calls:
+
+- `linear_kernel`: 0.858322
+- `cosine_similarity`: 0.905019
+- `pairwise_distance`: 1.603787
+- `numpy.dot`: 0.505195
+- product: 0.506122
+- operator: 0.495365
 
 ## ALS Recommender
 

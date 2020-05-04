@@ -2,8 +2,10 @@ import numpy as np
 import scipy.sparse as sparse
 from scipy.sparse.linalg import spsolve
 
+
+### ALS without optimization
 def implicit_als(sparse_data, alpha_val=40, iterations=10, lambda_val=0.1, features=10):
-    """ Implementation of Alternating Least Squares with implicit data. We iteratively
+    """ Implementation of Alternating Least Squares with explicit data. We iteratively
     compute the user (x_u) and item (y_i) vectors using the following formulas:
  
     x_u = ((Y.T*Y + Y.T*(Cu - I) * Y) + lambda*I)^-1 * (X.T * Cu * p(u))
@@ -15,20 +17,21 @@ def implicit_als(sparse_data, alpha_val=40, iterations=10, lambda_val=0.1, featu
         alpha_val (int): The rate in which we'll increase our confidence
         in a preference with more interactions.
  
-        iterations (int): How many times we alternate between fixing and 
+        iterations (int): How many times we alternate between fixing and
         updating our user and item vectors
  
         lambda_val (float): Regularization value
  
         features (int): How many latent features we want to compute.
     
-    Returns:     
+    Returns:
         X (csr_matrix): user vectors of size users-by-features
         
         Y (csr_matrix): item vectors of size items-by-features
      """
-
-    # Calculate the foncidence for each value in our data
+    # set seed
+    np.random.seed(123)
+    # Calculate the confidence for each value in our data
     confidence = sparse_data * alpha_val
     
     # Get the size of user rows and item columns
@@ -58,13 +61,12 @@ def implicit_als(sparse_data, alpha_val=40, iterations=10, lambda_val=0.1, featu
         for u in range(user_size):
 
             # Get the user row.
-            u_row = confidence[u,:].toarray() 
+            u_row = confidence[u,:].toarray()
 
-            # Calculate the binary preference p(u)
+            # let the explicit rating be p(u)
             p_u = u_row.copy()
-            p_u[p_u != 0] = 1.0
 
-            # Calculate Cu and Cu - I
+            # Calculate Cu - I and Cu
             CuI = sparse.diags(u_row, [0])
             Cu = CuI + Y_I
 
@@ -79,9 +81,8 @@ def implicit_als(sparse_data, alpha_val=40, iterations=10, lambda_val=0.1, featu
             # Get the item column and transpose it.
             i_row = confidence[:,i].T.toarray()
 
-            # Calculate the binary preference p(i)
+            # let the explicit rating be p(i)
             p_i = i_row.copy()
-            p_i[p_i != 0] = 1.0
 
             # Calculate Ci and Ci - I
             CiI = sparse.diags(i_row, [0])
@@ -95,14 +96,13 @@ def implicit_als(sparse_data, alpha_val=40, iterations=10, lambda_val=0.1, featu
     return X, Y
 
 
-def nonzeros(m, row):
-    for index in range(m.indptr[row], m.indptr[row+1]):
-        yield m.indices[index], m.data[index]
-      
-      
-def implicit_als_cg(Cui, features=20, iterations=20, lambda_val=0.1):
-    user_size, item_size = Cui.shape
 
+### ALS with optimization using conjugate gradient
+def implicit_als_cg(sparse_data, alpha_val = 15, iterations=20, lambda_val=0.1, features=20):
+    Cui = (sparse_data * alpha_val).astype('double')
+    user_size, item_size = Cui.shape
+    
+    np.random.seed(123)
     X = np.random.rand(user_size, features) * 0.01
     Y = np.random.rand(item_size, features) * 0.01
 
@@ -114,7 +114,12 @@ def implicit_als_cg(Cui, features=20, iterations=20, lambda_val=0.1):
         least_squares_cg(Ciu, Y, X, lambda_val)
     
     return sparse.csr_matrix(X), sparse.csr_matrix(Y)
-  
+
+##### helper functiions for implicit_als_cg
+def nonzeros(m, row):
+    for index in range(m.indptr[row], m.indptr[row+1]):
+        yield m.indices[index], m.data[index]
+        
 def least_squares_cg(Cui, X, Y, lambda_val, cg_steps=3):
     users, features = X.shape
 

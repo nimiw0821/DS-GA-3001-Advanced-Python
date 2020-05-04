@@ -1,5 +1,5 @@
 import numpy as np
-
+from sklearn.metrics import mean_squared_error
 ### Implementations on http://sdsawtelle.github.io/blog/output/mean-average-precision-MAP-for-recommender-systems.html
 
 def precision(true_arr, rec_arr, k = None, disp = True):
@@ -62,3 +62,23 @@ def MAP(true_arr, rec_arr, k = None, disp = True):
         print('The mean average prevision(MAP): %.3f' % mAP)
     
     return mAP
+
+
+# not used - from memory based model
+def get_rmse(rec_arr, true_arr, k = None, disp = True):
+    if k:
+        assert k <= rec_arr.shape[1]
+        rec_arr = rec_arr[:,:k]
+    else:
+        assert k > 0
+        k = rec_arr.shape[1]
+
+    # Ignore nonzero terms.
+    rec_arr = rec_arr[true_arr.nonzero()].flatten()
+    true_arr = true_arr[true_arr.nonzero()].flatten()
+    rmse = mean_squared_error(rec_arr, true_arr)**0.5
+
+    if disp:
+        print('The RMSE: %.3f' % rmse)
+        
+    return rmse

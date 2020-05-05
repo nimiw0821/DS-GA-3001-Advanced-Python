@@ -24,7 +24,7 @@ def memory_based_recommender(prediction, userid, rating, n_recom, user_matrix, m
     pred_sort = pred.loc[userid].sort_values(ascending=False)
     pred_sort.rename('prediction', inplace=True)
     
-    user_data = rating[rating.userId == userid]
+    user_data = rating[rating.userId == userid] #could use movieid lookup
     user_data = user_data.merge(movies_df, how = 'left', on = 'movieId').sort_values(['rating'], ascending=False)
     
     # Recommend the highest predicted rating movies that the user hasn't seen yet.
@@ -59,9 +59,24 @@ def memory_based_recommender_2(prediction, userid, rating, n_recom, user_matrix,
 ## model3 : cython add ndarray
 
 
-def memory_based_recommender_4():
+## from py file
+def memory_based_recommender_4(prediction, userid, rating, n_recom, movies_df):
+    """basic recommender function"""
+    # Get and sort the user's predictions
+    pred = pd.DataFrame(prediction, index=np.arange(1,prediction.shape[0] + 1))  # eliminate pass-in variable
+    pred_sort = pred.loc[userid].sort_values(ascending=False)
+    pred_sort.rename('prediction', inplace=True)
     
+    watched_id = rating[rating.userId == userid].movieId #use list instead of pandas
+    #user_data = user_data.merge(movies_df, how = 'left', on = 'movieId').sort_values(['rating'], ascending=False)
+    
+    # Recommend the highest predicted rating movies that the user hasn't seen yet.
+    notsee = movies_df[~movies_df['movieId'].isin(watched_id)]
+    notsee = notsee.merge(pd.DataFrame(pred_sort), how='left', left_on='movieId', right_index=True)
+    notsee = notsee.sort_values('prediction', ascending=False)
+    recommendation = notsee.iloc[:n_recom, :-1]
+    
+    return recommendation
 
-    return 0
 
 

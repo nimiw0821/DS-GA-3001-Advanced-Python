@@ -1,14 +1,7 @@
-### copy from Shirley's content_based_recommender.py file
-### compare different cosine similarity method
-### can be used across the models
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import linear_kernel
-from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.metrics.pairwise import linear_kernel, cosine_similarity
 from sklearn.metrics import pairwise_distances
-from scipy.spatial.distance import cosine
-from scipy.sparse import csr_matrix
-import pandas as pd
 import numpy as np
+import operator
 
 
 def create_sim_matrix_kernel(tfidf_matrix):
@@ -39,29 +32,34 @@ def create_sim_matrix_distance(tfidf_matrix):
     return sim_matrix
 
 
-# def create_sim_matrix_product(tfidf_matrix):
-#     '''
-#     Create the pairwise similarity matrix for all the items using numpy.
-#     '''
-#     # return the dense ndarray representation of the sparse matrix
-#     tfidf_matrix = tfidf_matrix.toarray()
-#     return np.dot(tfidf_matrix, tfidf_matrix.T)
-
-
-def create_sim_matrix_numpy(tfidf_matrix):
+def create_sim_matrix_dot(tfidf_matrix):
     '''
     Create the pairwise similarity matrix for all the items using numpy.
     '''
-    # return the dense ndarray representation of the sparse matrix
-    tfidf_matrix = tfidf_matrix.toarray()
-    return np.inner(tfidf_matrix, tfidf_matrix)
+    sim_matrix = np.dot(tfidf_matrix, tfidf_matrix.T)
+    return sim_matrix
 
 
-def create_sim_matrix_scratch_np(tfidf_matrix):
+def create_sim_matrix_product(tfidf_matrix):
+    '''
+    Create the pairwise similarity matrix for all the items using *.
+    '''
+    sim_matrix = tfidf_matrix * tfidf_matrix.T
+    return sim_matrix
+
+
+def create_sim_matrix_operator(tfidf_matrix):
+    '''
+    Create the pairwise similarity matrix for all the items using operator.
+    '''
+    sim_matrix = operator.mul(tfidf_matrix, tfidf_matrix.T)
+    return sim_matrix
+
+
+def create_sim_matrix_scratch(tfidf_matrix):
     '''
     Create the pairwise similarity matrix for all the items from scratch
-    using nested for loops.
-    Note: very, very slow.
+    using nested for loops (very slow).
     '''
     # return the dense ndarray representation of the sparse matrix
     tfidf_matrix = tfidf_matrix.toarray()
@@ -72,17 +70,3 @@ def create_sim_matrix_scratch_np(tfidf_matrix):
             for k in range(len(Y)):
                 sim_matrix[i][j] += X[i][k] * Y[k][j]
     return sim_matrix
-
-
-# for memory based part
-def cos_similarity_1(user_item, kind, epsilon=1e-9): 
-    # epsilon -> small number for handling dived-by-zero errors
-    if kind == 'user':
-        sim = user_item.dot(user_item.T) + epsilon  #matrix X matrix itself.T
-    elif kind == 'item':
-        sim = user_item.T.dot(user_item) + epsilon
-    norms = np.array([np.sqrt(np.diagonal(sim))])
-    return (sim / norms / norms.T)
-
-#MPI
-# def create_sim_matrix_MPI():

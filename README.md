@@ -1,4 +1,5 @@
 # DS-GA-3001-Advanced-Python
+Github repo: https://github.com/nimiw0821/DS-GA-3001-Advanced-Python
 
 Dataset: https://grouplens.org/datasets/movielens/latest/ 
 
@@ -18,7 +19,14 @@ Time for creating a similarity matrix and generating 10 recommendations for each
 | nested for loops  | 3196.773 | 3098.554  |
 | nested for loops (Cython) | 1478.108 | 1276.212 |
 
-
+## Content-based Recommender
+|  Method  |  Time in Seconds  |
+|---|---|
+|  Base   |  0.031  |
+|  Simplified code  | 0.021  |
+|  Numba.jit()  |  0.294 |
+|  Cython  | 0.019 |
+|  Combined Cython and simplified code | 0.021  |
 
 ## ALS Recommender
 

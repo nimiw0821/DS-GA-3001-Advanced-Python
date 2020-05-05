@@ -19,7 +19,7 @@ Time for creating a similarity matrix and generating 10 recommendations for each
 | nested for loops  | 3196.773 | 3098.554  |
 | nested for loops (Cython) | 1478.108 | 1276.212 |
 
-## Content-based Recommender
+## Memory-based Recommender
 |  Method  |  Time in Seconds  |
 |---|---|
 |  Base   |  0.031  |

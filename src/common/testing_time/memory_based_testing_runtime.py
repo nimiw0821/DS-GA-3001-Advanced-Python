@@ -7,7 +7,7 @@ from evaluation.evaluate import precision, MAP
 from models.memory_based.predict_memory_recommender import *
 from models.content.cosine_similarity import *
 from models.memory_based.model3 import *
-from models.memory_based.model_combined import *
+from models.memory_based.model5 import *
 
 import time
 import pandas as pd

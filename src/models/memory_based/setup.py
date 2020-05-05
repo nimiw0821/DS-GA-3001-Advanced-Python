@@ -6,7 +6,7 @@ import Cython
 from Cython.Build import cythonize
 
 setup(
-    name = "model3_cython",
-    ext_modules = cythonize("model3.pyx"), 
+    name = "models_cython",
+    ext_modules = cythonize("*.pyx"), 
 )
 #python setup.py build_ext --inplace

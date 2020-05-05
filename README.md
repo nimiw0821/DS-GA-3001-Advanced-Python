@@ -10,23 +10,23 @@ Time for creating a similarity matrix and generate 10 recommendations for each o
 
 With Function Calls:
 
-- `linear_kernel`: 0.895984
-- `cosine_similarity`: 0.937319
-- `pairwise_distance`: 1.472686
-- `numpy.dot`: 0.553272
-- product: 0.539438
-- operator: 0.539446
-- nested for loops: 3196.772852
-- parallel computing: TODO
+- `linear_kernel`: 0.895984s
+- `cosine_similarity`: 0.937319s
+- `pairwise_distance`: 1.472686s
+- `numpy.dot`: 0.553272s
+- product: 0.539438s
+- operator: 0.539446s
+- nested for loops: 3196.772852s
+- using `Cython` to optimize nested for loops: 1478.108414s
 
 Remove Function Calls:
 
-- `linear_kernel`: 0.858322
-- `cosine_similarity`: 0.905019
-- `pairwise_distance`: 1.603787
-- `numpy.dot`: 0.505195
-- product: 0.506122
-- operator: 0.495365
+- `linear_kernel`: 0.858322s
+- `cosine_similarity`: 0.905019s
+- `pairwise_distance`: 1.603787s
+- `numpy.dot`: 0.505195s
+- product: 0.506122s
+- operator: 0.495365s
 
 ## ALS Recommender
 

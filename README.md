@@ -6,27 +6,19 @@ Dataset: https://grouplens.org/datasets/movielens/latest/
 
 ## Content-based Recommender
 
-Time for creating a similarity matrix and generate 10 recommendations for each of the 3 movies:
+Time for creating a similarity matrix and generating 10 recommendations for each of the 3 movies:
 
-With Function Calls:
+|  Method  | w/ Function Calls (s)  | w/o Function Calls (s)  |
+|---|---|---|
+| linear_kernel  | 0.896 | 0.858  |
+| cosine_similarity  |  0.937 | 0.905   |
+| pairwise_distances | 1.473  | 1.406  |
+| matrix multiplication (np.dot)  | 0.553  | 0.505 |
+| matrix multiplication (operator) | 0.539 | 0.495 |
+| nested for loops  | 3196.773 | 3098.554  |
+| nested for loops (Cython) | 1478.108 | 1276.212 |
 
-- `linear_kernel`: 0.895984s
-- `cosine_similarity`: 0.937319s
-- `pairwise_distance`: 1.472686s
-- `numpy.dot`: 0.553272s
-- product: 0.539438s
-- operator: 0.539446s
-- nested for loops: 3196.772852s
-- using `Cython` to optimize nested for loops: 1478.108414s
 
-Remove Function Calls:
-
-- `linear_kernel`: 0.858322s
-- `cosine_similarity`: 0.905019s
-- `pairwise_distance`: 1.603787s
-- `numpy.dot`: 0.505195s
-- product: 0.506122s
-- operator: 0.495365s
 
 ## ALS Recommender
 

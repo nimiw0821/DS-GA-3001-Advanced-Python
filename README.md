@@ -22,8 +22,10 @@ Time for creating a similarity matrix and generating 10 recommendations for each
 
 ## ALS Recommender
 
-Time for training models:
-
-- `Basic ALS`: 470s
-- `ALS with Conjugate Gradient`: 74s
-- `ALS with Conjugate Gradient using Numba JIT (C compiler)`: 10s
+Time for training ALS models:
+|  Method  |  Time in Seconds  |
+|---|---|
+|  Base ALS  |  470  |
+|  ALS with Conjugate Gradient (CG)  | 74  |
+|  ALS with CG using Cython  |  84  |
+|  ALS with CG using Numba JIT  | 10  |
